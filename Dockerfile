@@ -30,6 +30,7 @@ COPY ./static /usr/share/nginx/html/
 # Copy the app directory contents into the container at /app
 COPY ./app /app
 
-CMD ["python3", "app.py"]
+CMD ["python", "app.py"]
 
 EXPOSE 80
+EXPOSE 5000
