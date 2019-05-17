@@ -1,2 +1,2 @@
-
-AWS EC2 Nginx Docker
+Nginx uWSGI Flask Stack
+=======================

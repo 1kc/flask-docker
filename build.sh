@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-docker build -t docker-nginx .
+# --rm removes any intermediate and none images
+docker build --rm -t flask-docker .

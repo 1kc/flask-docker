@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
-sudo docker run -d -p 80:80 docker-nginx
+
+# --rm delete all stopped containers
+# -d for detached mode
+sudo docker run --rm -d -p 80:80 flask-docker
