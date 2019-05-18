@@ -11,13 +11,13 @@ ADD . /app
 # RUN pip3 install --upgrade pip
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# run uwsgi as root
-# CMD [ "uwsgi", "app.ini" ]
+# run uwsgi as root with unix socket
+CMD [ "uwsgi", "app.ini" ]
 
+# run uwsgi as root on 5000
 # CMD [ "uwsgi", "dev.ini" ]
 
-# Flask dev server
-CMD [ "python3", "app.py" ]
+# Flask dev server on 5000
+# CMD [ "python3", "app.py" ]
 
-# uWSGI
-EXPOSE 5000
+# EXPOSE 5000

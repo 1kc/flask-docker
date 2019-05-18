@@ -3,9 +3,9 @@ app = Flask(__name__)
 
 # The main flask app
 
-@app.route("/")
+@app.route("/api")
 def hello():
-    return "<h1 style='color:green'>Hello There!</h1>"
+    return "<h1 style='color:red'>Hello There!</h1>"
 
 if __name__ == "__main__":
     # app.run(host='0.0.0.0')
