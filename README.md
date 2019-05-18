@@ -13,3 +13,6 @@ Containerised:
 
 
 ``./shared`` is used to share a UNIX socket between the Nginx and uWSGI container.
+
+
+Related link: https://www.patricksoftwareblog.com/using-docker-for-flask-application-development-not-just-production/
