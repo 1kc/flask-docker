@@ -16,3 +16,12 @@ Containerised:
 
 
 Related link: https://www.patricksoftwareblog.com/using-docker-for-flask-application-development-not-just-production/
+
+Usage
+---
+
+Start service
+
+```bash
+$ docker-compose up
+```
