@@ -122,5 +122,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Postgres
+# Do not commit the Postgres database
 db/

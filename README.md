@@ -1,7 +1,7 @@
 Nginx uWSGI Flask Stack
 =======================
 
-Simple web app stack:
+Lightweight web app stack:
 
 React - Nginx - uWSGI - Flask - PostgreSQL
 
