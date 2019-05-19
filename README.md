@@ -37,13 +37,12 @@ Server: db
 Username: postgres
 Password: docker
 
-Change the password by executing this SQL command in Adminer:
-
-```SQL
-ALTER USER postgres WITH PASSWORD 'new_password';
-```
-
 Volume ./db mounts to /var/lib/postgresql/data to allow for persistence.
+
+Password
+--------
+Use ``printf 'docker' > password`` in ./devsecrets to set password
+
 
 TODO:
 -----

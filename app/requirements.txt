@@ -1,2 +1,11 @@
-uwsgi
 flask
+flask-marshmallow
+Flask-SQLAlchemy
+uwsgi
+SQLAlchemy
+six
+connexion
+MarkupSafe
+marshmallow
+marshmallow-sqlalchemy
+psycopg2

@@ -1,6 +1,6 @@
 FROM alpine:3.8
 
-RUN apk add --no-cache bash python3 python3-dev build-base linux-headers pcre-dev
+RUN apk add --no-cache bash python3 python3-dev build-base linux-headers pcre-dev postgresql-dev musl-dev vim
 
 # Set the working directory to /app in the container
 
