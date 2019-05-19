@@ -1,27 +1,55 @@
 Nginx uWSGI Flask Stack
 =======================
 
-Simple stack for serving apis
+Simple web app stack:
 
-Flask is used to serve ``/api``
-Nginx is used to serve static content at ``/``
+React - Nginx - uWSGI - Flask - PostgreSQL
+
+Flask used to serve ``/api``
+Nginx used to serve static content at ``/``
 
 Containerised:
 
 - Nginx
-- Flask uWSGI server
-
+- Flask with uWSGI server
+- PostgreSQL
+- Adminer for managing db
 
 ``./shared`` is used to share a UNIX socket between the Nginx and uWSGI container.
 
-
-Related link: https://www.patricksoftwareblog.com/using-docker-for-flask-application-development-not-just-production/
-
 Usage
----
+-----
 
 Start service
 
 ```bash
 $ docker-compose up
 ```
+
+Database
+--------
+
+The PostgreSQL database can be access via Adminer:
+localhost:8080
+
+System: PostgresSQL
+Server: db
+Username: postgres
+Password: docker
+
+Change the password by executing this SQL command in Adminer:
+
+```SQL
+ALTER USER postgres WITH PASSWORD 'new_password';
+```
+
+Volume ./db maps mounts /var/lib/postgresql/data to allow for persistence.
+
+TODO:
+-----
+
+- Handling permissions - https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
+
+Related links:
+--------------
+Stack: https://www.patricksoftwareblog.com/using-docker-for-flask-application-development-not-just-production/
