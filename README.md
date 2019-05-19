@@ -43,7 +43,7 @@ Change the password by executing this SQL command in Adminer:
 ALTER USER postgres WITH PASSWORD 'new_password';
 ```
 
-Volume ./db maps mounts /var/lib/postgresql/data to allow for persistence.
+Volume ./db mounts to /var/lib/postgresql/data to allow for persistence.
 
 TODO:
 -----
