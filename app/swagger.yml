@@ -12,158 +12,79 @@ basePath: /api
 
 # Paths supported by the server application
 paths:
-  /people:
+  /sample:
     get:
-      operationId: people.read_all
+      operationId: sample.read_all
       tags:
-        - People
-      summary: Read the entire set of people, sorted by last name
-      description: Read the entire set of people, sorted by last name
+        - Sample
+      summary: Read the entire set of samples, sorted by date
+      description: Read the entire set of samples, sorted by date
       responses:
         200:
-          description: Successfully read people set operation
+          description: Successfully read sample set operation
           schema:
             type: array
             items:
               properties:
-                person_id:
+                grain_id:
                   type: string
-                  description: Id of the person
-                fname:
+                  description: Id of the sample
+                date:
                   type: string
-                  description: First name of the person
-                lname:
+                  description: Creation/Update timestamp of the sample
+                l_value:
+                  type: number
+                  format: float
+                  description: L value
+                harmful:
+                  type: boolean
+                  description: Detected Harmful
+                photo:
                   type: string
-                  description: Last name of the person
-                timestamp:
-                  type: string
-                  description: Creation/Update timestamp of the person
-
+                  description: Link to photo
     post:
-      operationId: people.create
+      operationId: sample.create
       tags:
-        - People
-      summary: Create a person
-      description: Create a new person
+        - Sample
+      summary: Create a sample
+      description: Create a new sample
       parameters:
-        - name: person
+        - name: sample
           in: body
-          description: Person to create
+          description: Sample to create
           required: True
           schema:
             type: object
             properties:
-              fname:
+              l_value:
+                type: number
+                format: float
+                description: L value
+              harmful:
+                type: boolean
+                description: Detected Harmful
+              photo:
                 type: string
-                description: First name of person to create
-              lname:
-                type: string
-                description: Last name of person to create
+                description: Link to photo
       responses:
         201:
-          description: Successfully created person
+          description: Successfully created sample
           schema:
             properties:
-              person_id:
+              date:
                 type: string
-                description: Id of the person
-              fname:
+                description: Creation/Update timestamp of the sample
+              l_value:
+                type: number
+                format: float
+                description: L value
+              harmful:
+                type: boolean
+                description: Detected Harmful
+              photo:
                 type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
+                description: Link to photo
               timestamp:
                 type: string
-                description: Creation/Update timestamp of the person record
-
-  /people/{person_id}:
-    get:
-      operationId: people.read_one
-      tags:
-        - People
-      summary: Read one person
-      description: Read one person
-      parameters:
-        - name: person_id
-          in: path
-          description: Id of the person to get
-          type: integer
-          required: True
-      responses:
-        200:
-          description: Successfully read person from people data operation
-          schema:
-            type: object
-            properties:
-              person_id:
-                type: string
-                description: Id of the person
-              fname:
-                type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the person record
-
-    put:
-      operationId: people.update
-      tags:
-        - People
-      summary: Update a person
-      description: Update a person
-      parameters:
-        - name: person_id
-          in: path
-          description: Id the person to update
-          type: integer
-          required: True
-        - name: person
-          in: body
-          schema:
-            type: object
-            properties:
-              fname:
-                type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
-      responses:
-        200:
-          description: Successfully updated person
-          schema:
-            properties:
-              person_id:
-                type: string
-                description: Id of the person in the database
-              fname:
-                type: string
-                description: First name of the person
-              lname:
-                type: string
-                description: Last name of the person
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the person record
-
-    delete:
-      operationId: people.delete
-      tags:
-        - People
-      summary: Delete a person from the people list
-      description: Delete a person
-      parameters:
-        - name: person_id
-          in: path
-          type: integer
-          description: Id of the person to delete
-          required: true
-      responses:
-        200:
-          description: Successfully deleted a person
-
+                description: Creation/Update timestamp of the sample
 
