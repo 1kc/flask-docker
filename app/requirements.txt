@@ -9,3 +9,4 @@ MarkupSafe
 marshmallow
 marshmallow-sqlalchemy
 psycopg2
+swagger-ui-bundle

@@ -1,14 +1,17 @@
-from flask import Flask
-app = Flask(__name__)
+"""
+Main module of the server file
+"""
 
-# The main flask app
+# local modules
+import config
 
-@app.route("/api")
-def hello():
-    return "<h1 style='color:red'>Hello There!</h1>"
+
+# Get the application instance
+connex_app = config.connex_app
+
+# Read the swagger.yml file to configure the endpoints
+connex_app.add_api("swagger.yml")
+
 
 if __name__ == "__main__":
-    # app.run(host='0.0.0.0')
-
-    # Dev server
-    app.run(host='0.0.0.0', debug=True)
+    connex_app.run(debug=True)

@@ -1,5 +1,5 @@
-from app import app
+from app import connex_app
 
 # uWSGI entry point
 if __name__ == "__main__":
-    app.run()
+    connex_app.run()

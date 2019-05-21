@@ -26,6 +26,8 @@ Start service
 $ docker-compose up
 ```
 
+Swagger UI accessible via http://localhost/api/ui/
+
 Database
 --------
 
