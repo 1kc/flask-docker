@@ -34,7 +34,8 @@ services:
      - "80:80"
     volumes:
      - ./shared:/shared
-     - ./html:/usr/share/nginx/html
+     - ./frontend/build:/usr/share/nginx/html
+    #- ./html:/usr/share/nginx/html
   adminer:
     image: adminer
     restart: always
