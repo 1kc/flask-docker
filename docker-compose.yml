@@ -18,6 +18,8 @@ services:
     build: ./app
     image: 1kcdocker/flask
     restart: always
+    # flask dev server port
+    # using unix sockets so not needed
     ports:
      - "5000:5000"
     volumes:
@@ -40,7 +42,7 @@ services:
     image: adminer
     restart: always
     ports:
-     - "8080:8080"
+     - "8080"
 secrets:
   password:
     file: ./devsecrets/password

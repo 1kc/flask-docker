@@ -23,7 +23,7 @@ class App extends React.Component {
 
   componentDidMount() {
     axios
-      .get("http://127.0.0.1:80/api/sample")
+      .get(`/api/sample`)
       .then(response => {
         this.setState((state, props) => ({sample: response.data}));
         /*
