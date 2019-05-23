@@ -84,7 +84,3 @@ paths:
               photo:
                 type: string
                 description: Link to photo
-              timestamp:
-                type: string
-                description: Creation/Update timestamp of the sample
-
