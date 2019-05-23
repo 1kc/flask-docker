@@ -26,7 +26,6 @@ class Inputs extends React.Component {
   };
 
   handleClick = event => {
-    console.log(this.state.l_value + ' ' + this.state.harmful + ' ' + this.state.photo);
     let data = {
       harmful: (this.state.harmful === 'True' ? true : false),
       l_value: parseFloat(this.state.l_value),
@@ -43,6 +42,9 @@ class Inputs extends React.Component {
           //handle error
           console.log(response);
     });
+
+    // TODO: fix this, this is bad
+    window.location.reload()
   };
 
   render() {

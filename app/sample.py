@@ -44,3 +44,54 @@ def create(sample):
     data = schema.dump(new_sample).data
 
     return data, 201
+
+def read_one(sample_id):
+    """
+    This function responds to a request for /api/people/{person_id}
+    with one matching person from people
+
+    :param person_id:   Id of person to find
+    :return:            person matching id
+    """
+    # Get the person requested
+    sample = Sample.query.filter(Sample.grain_id == sample_id).one_or_none()
+
+    # Did we find a person?
+    if sample is not None:
+
+        # Serialize the data for the response
+        sample_schema = SampleSchema()
+        data = sample_schema.dump(sample).data
+        return data
+
+    # Otherwise, nope, didn't find that person
+    else:
+        abort(
+            404,
+            "Person not found for Id: {sample_id}".format(sample_id=sample_id),
+        )
+
+def delete(sample_id):
+    """
+    This function deletes a sample from the sample structure
+
+    :param sample_id:   Id of the sample to delete
+    :return:            200 on successful delete, 404 if not found
+    """
+    # Get the person requested
+    sample = Sample.query.filter(Sample.grain_id == sample_id).one_or_none()
+
+    # Did we find a person?
+    if sample is not None:
+        db.session.delete(sample)
+        db.session.commit()
+        return make_response(
+            "Sample {sample_id} deleted".format(sample_id=sample_id), 200
+        )
+
+    # Otherwise, nope, didn't find that sample
+    else:
+        abort(
+            404,
+            "Sample not found for Id: {sample_id}".format(sample_id=sample_id),
+        )

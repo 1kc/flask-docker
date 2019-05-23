@@ -84,3 +84,53 @@ paths:
               photo:
                 type: string
                 description: Link to photo
+  /sample/{sample_id}:
+    get:
+      operationId: sample.read_one
+      tags:
+        - Sample
+      summary: Read one sample
+      description: Read one sample
+      parameters:
+        - name: sample_id
+          in: path
+          description: Id of the sample to get
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully read sample from sample data operation
+          schema:
+            type: object
+            properties:
+                grain_id:
+                  type: string
+                  description: Id of the sample
+                date:
+                  type: string
+                  description: Creation/Update timestamp of the sample
+                l_value:
+                  type: number
+                  format: float
+                  description: L value
+                harmful:
+                  type: boolean
+                  description: Detected Harmful
+                photo:
+                  type: string
+                  description: Link to photo
+    delete:
+      operationId: sample.delete
+      tags:
+        - Sample
+      summary: Delete a sample from the sample list
+      description: Delete a sample
+      parameters:
+        - name: sample_id
+          in: path
+          type: integer
+          description: Id of the sample to delete
+          required: true
+      responses:
+        200:
+          description: Successfully deleted a sample

@@ -48,7 +48,8 @@ Use ``printf 'docker' > password`` in ./devsecrets to set password
 
 TODO:
 -----
-
+- remove window.location.reload() in Input.js and EnhancedTable.js api calls
+- rename grain_id to sample_id
 - Handling permissions - https://denibertovic.com/posts/handling-permissions-with-docker-volumes/
 
 Related links:

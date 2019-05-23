@@ -18,12 +18,16 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import axios from 'axios'
 
 let counter = 0;
+
+/*
 function createData(date, grain_id, l_value, harmful, photo) {
   counter += 1;
   return { id: counter, date, grain_id, l_value, harmful, photo };
 }
+*/
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -164,7 +168,9 @@ let EnhancedTableToolbar = props => {
       <div className={classes.actions}>
         {numSelected > 0 ? (
           <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
+            <IconButton aria-label="Delete"
+              onClick={props.handleDelete}
+            >
               <DeleteIcon />
             </IconButton>
           </Tooltip>
@@ -207,8 +213,10 @@ class EnhancedTable extends React.Component {
     orderBy: 'date',
     selected: [],
     data: [
+      /*
       createData('12/12/18', 1, 3.7, 'True', 'photo1.jpg'),
       createData('13/12/18', 2, 1.7, 'False', 'photo2.jpg'),
+      */
     ],
     page: 0,
     rowsPerPage: 10,
@@ -237,6 +245,25 @@ class EnhancedTable extends React.Component {
     }
     this.setState({ selected: [] });
   };
+
+  handleDelete = (event) => {
+    let arr = this.state.selected;
+    for(let i = 0; i < arr.length; i++) {
+      let grain_id = arr[i];
+      axios
+        .delete(`/api/sample/${grain_id}`)
+        .then(function (response) {
+          //handle success
+          console.log(response);
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        })
+      }
+    // TODO: fix this, this is bad
+    window.location.reload()
+  }
 
   handleClick = (event, id) => {
     const { selected } = this.state;
@@ -277,7 +304,7 @@ class EnhancedTable extends React.Component {
 
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} handleDelete={this.handleDelete} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
