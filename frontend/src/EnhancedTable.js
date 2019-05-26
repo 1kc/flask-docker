@@ -344,13 +344,13 @@ class EnhancedTable extends React.Component {
 
     return (
       <Grid container spacing={8} justify="center">
-        <Grid item xs={8}>
+        <Grid item xs={12} sm={10}>
           <br />
           <Paper>
             <Inputs handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
           </Paper>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12} sm={10}>
           <Paper className={classes.root}>
             <EnhancedTableToolbar numSelected={selected.length} handleDelete={this.handleDelete} />
             <div className={classes.tableWrapper}>
