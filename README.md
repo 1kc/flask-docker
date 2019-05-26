@@ -8,9 +8,9 @@ React - Nginx - uWSGI - Flask - PostgreSQL
 Flask used to serve ``/api``
 Nginx used to serve static content at ``/``
 
-Containerised:
+Containers:
 
-- Nginx
+- Nginx serving static React frontend
 - Flask with uWSGI server
 - PostgreSQL
 - Adminer for managing db
@@ -36,8 +36,9 @@ localhost:8080
 
 System: PostgresSQL
 Server: db
-Username: postgres
+Username: app
 Password: docker
+Database: app
 
 Volume ./db mounts to /var/lib/postgresql/data to allow for persistence.
 

@@ -18,16 +18,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import axios from 'axios'
+import Grid from '@material-ui/core/Grid';
 
-let counter = 0;
-
-/*
-function createData(date, grain_id, l_value, harmful, photo) {
-  counter += 1;
-  return { id: counter, date, grain_id, l_value, harmful, photo };
-}
-*/
+import Inputs from './Inputs';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -208,24 +201,35 @@ const styles = theme => ({
 
 class EnhancedTable extends React.Component {
 
+  async fetch() {
+    try {
+      const res = await fetch(`/api/sample`);
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+      const json = await res.json();
+      this.setState(() => ({data: json}));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  componentDidMount() {
+    this.fetch();
+  }
+
   state = {
     order: 'asc',
     orderBy: 'date',
     selected: [],
-    data: [
-      /*
-      createData('12/12/18', 1, 3.7, 'True', 'photo1.jpg'),
-      createData('13/12/18', 2, 1.7, 'False', 'photo2.jpg'),
-      */
-    ],
+    data: [],
     page: 0,
     rowsPerPage: 10,
+    l_value: '',
+    harmful: '',
+    photo: '',
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return {data: nextProps.sample};
-  }
-  
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -246,24 +250,60 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: [] });
   };
 
-  handleDelete = (event) => {
-    let arr = this.state.selected;
-    for(let i = 0; i < arr.length; i++) {
-      let grain_id = arr[i];
-      axios
-        .delete(`/api/sample/${grain_id}`)
-        .then(function (response) {
-          //handle success
-          console.log(response);
-        })
-        .catch(function (response) {
-          //handle error
-          console.log(response);
-        })
+  delete = async (id) => {
+    try {
+      const res = await fetch(`/api/sample/${id}`, {method: "DELETE"});
+      if (!res.ok) {
+        throw Error(res.statusText);
       }
-    // TODO: fix this, this is bad
-    window.location.reload()
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  handleDelete = async (event) => {
+    // run delete api promises in parallel
+    const promises = this.state.selected.map(this.delete);
+    await Promise.all(promises);
+
+    // update state/ui
+    this.setState((prev) => ({
+      data: prev.data.filter((item) => !prev.selected.includes(item.grain_id)),
+      selected: []
+    }));
+  }
+
+  handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const sample = {
+      harmful: (this.state.harmful === 'True' ? true : false),
+      l_value: parseFloat(this.state.l_value),
+      photo: this.state.photo,
+    }
+
+    try {
+      const res = await fetch(`/api/sample`, {
+        method: "POST", 
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sample)
+      });
+      if (!res.ok) {
+        throw Error(res.statusText);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    this.fetch();
+  };
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
 
   handleClick = (event, id) => {
     const { selected } = this.state;
@@ -303,70 +343,80 @@ class EnhancedTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
-      <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} handleDelete={this.handleDelete} />
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.grain_id);
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n.grain_id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.grain_id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.date}
-                      </TableCell>
-                      <TableCell align="right">{n.grain_id}</TableCell>
-                      <TableCell align="right">{n.l_value}</TableCell>
-                      <TableCell align="right">{n.harmful ? "True" : "False"}</TableCell>
-                      <TableCell align="right">{n.photo}</TableCell>
+      <Grid container spacing={8} justify="center">
+        <Grid item xs={8}>
+          <br />
+          <Paper>
+            <Inputs handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+          </Paper>
+        </Grid>
+        <Grid item xs={8}>
+          <Paper className={classes.root}>
+            <EnhancedTableToolbar numSelected={selected.length} handleDelete={this.handleDelete} />
+            <div className={classes.tableWrapper}>
+              <Table className={classes.table} aria-labelledby="tableTitle">
+                <EnhancedTableHead
+                  numSelected={selected.length}
+                  order={order}
+                  orderBy={orderBy}
+                  onSelectAllClick={this.handleSelectAllClick}
+                  onRequestSort={this.handleRequestSort}
+                  rowCount={data.length}
+                />
+                <TableBody>
+                  {stableSort(data, getSorting(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map(n => {
+                      const isSelected = this.isSelected(n.grain_id);
+                      return (
+                        <TableRow
+                          hover
+                          onClick={event => this.handleClick(event, n.grain_id)}
+                          role="checkbox"
+                          aria-checked={isSelected}
+                          tabIndex={-1}
+                          key={n.grain_id}
+                          selected={isSelected}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox checked={isSelected} />
+                          </TableCell>
+                          <TableCell component="th" scope="row" padding="none">
+                            {n.date}
+                          </TableCell>
+                          <TableCell align="right">{n.grain_id}</TableCell>
+                          <TableCell align="right">{n.l_value}</TableCell>
+                          <TableCell align="right">{n.harmful ? "True" : "False"}</TableCell>
+                          <TableCell align="right">{n.photo}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 49 * emptyRows }}>
+                      <TableCell colSpan={6} />
                     </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={data.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
-      </Paper>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+            <TablePagination
+              rowsPerPageOptions={[10, 25, 100]}
+              component="div"
+              count={data.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              backIconButtonProps={{
+                'aria-label': 'Previous Page',
+              }}
+              nextIconButtonProps={{
+                'aria-label': 'Next Page',
+              }}
+              onChangePage={this.handleChangePage}
+              onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
     );
   }
 }
