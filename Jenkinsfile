@@ -9,11 +9,27 @@ pipeline {
         CI = 'true'
     }
     stages {
+        stage('Test frontend') {
+            steps {
+                dir('frontend') {
+                    sh 'npm prune'
+                    sh 'npm install'
+                    sh 'npm run test'
+                }
+            }
+        }
         stage('Build frontend') {
             steps {
                 dir('frontend') {
-                    sh 'npm install'
                     sh 'npm run build'
+                }
+            }
+        }
+        stage('Cleanup') {
+            steps {
+                dir('frontend') {
+                    sh 'npm prune'
+                    sh 'rm -rf node_modules'
                 }
             }
         }
