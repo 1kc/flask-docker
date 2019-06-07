@@ -35,8 +35,10 @@
   "jest": {
     "collectCoverageFrom": [
       "src/SearchAppBar.js",
-      "!**/node_modules/**",
-      "!**/vendor/**"
+      "src/App.js",
+      "src/Inputs.js",
+      "src/EnhancedTable.js"
     ]
-  }
+  },
+  "devDependencies": {}
 }

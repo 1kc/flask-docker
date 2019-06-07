@@ -19,7 +19,7 @@ connex_app = connexion.App(__name__, specification_dir=basedir)
 # Get the underlying Flask app instance
 app = connex_app.app
 
-# Build the Sqlite ULR for SqlAlchemy
+# Build the Postgres ULI for SqlAlchemy
 
 pg_url = 'postgresql://{0}:{1}@{2}/{3}' \
          .format(USER, PASSWORD, HOSTNAME, DATABASE)
